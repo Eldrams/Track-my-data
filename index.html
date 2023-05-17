@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <link rel="stylesheet" href="index.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awsome (i tag) -->
+    <script src="https://kit.fontawesome.com/596d89af79.js" crossorigin="anonymous"></script>
+    <title>TryWyre Tracker</title>
+</head>
+<body>
+    <div class="flex-container hero">
+        <header>
+            <nav>
+                <div class="logo">
+                    <img class="logo" src="./wyre-removebg-preview.png">
+                    <h1>Track <span>my</span> data</h1>
+                </div>
+                <ul>
+                    <div class="wrap">
+                        <button class="decrement" disabled id="decrementDc">-1</button>  
+                        <li id="dataCaptures"><input id="userScoreDc" type="number" placeholder="Enter data captures"></li> 
+                        <button id="incrementDc">+1</button>
+                    </div>
+                    
+                    <div class="wrap">
+                            <button class="decrement" disabled id="decrementSb">-1</button>
+                            <li id="salaryBoosts"><input placeholder="Enter salary boosts" id="userScoreSb" type="number"></li>
+                            <button id="incrementSb">+1</button>
+                    </div>
+
+                    <div class="wrap">
+                            <button class="decrement" disabled id="decrementC">-1</button>
+                            <li id="callCurrent"><input placeholder="Enter current calls" id="userScoreC" type="number"></li>
+                            <button id="incrementC">+1</button>
+                    </div>
+                    
+                </ul>
+            </nav>
+            <div class="wrap btn">
+                <button id="submitKpi">Submit</button> 
+                <button id="resetStats">Reset stats</button>
+            </div>
+        </header> 
+    </div>
+
+
+    <form id="form">
+
+    <div class="name-container">
+        <input
+        id="firstName"  
+        type="text"
+        placeholder="First Name"
+        >
+        <label for="firstName"></label>
+
+        <input
+        id="lastName"  
+        type="text"
+        placeholder="Last Name"
+        >
+        <label for="lastName"></label>
+
+        <input
+        id="bussinessName"  
+        type="text"
+        placeholder="Bussiness Name"
+        >
+        <label for="bussinessName"></label>
+    
+        <input
+        id="email"  
+        type="email"
+        placeholder="email"
+        >
+        <label for="email"></label>
+
+        <input
+        id="number"  
+        type="number"
+        placeholder="Tel Number"
+        >
+        <label for="number"></label>
+    </div>
+        
+        <textarea id="notes" placeholder="Notes here..."></textarea>
+        <label for="notes"></label>
+        
+          
+        <label class="callBack" for="callBack">Set a callback time:
+        <input 
+        id="callBack"  
+        type="datetime-local"
+        name="callBack"
+        >
+        </label>
+        <button>Add Lead</button>
+    </form>
+<div id="list">
+        <!-- Inject JS -->
+</div>
+<div id="list-comments">
+    <!-- Inject JS -->
+</div>
+    <script type="module" src="index.js"></script>
+</body>
+</html>

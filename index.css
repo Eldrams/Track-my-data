@@ -1,0 +1,243 @@
+/* Global style */
+
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #262626;
+}
+
+button, input, textarea{
+    font-family: inherit;
+    border-radius: 10px;
+    border: none;
+    background-color: #3785c6;
+    color:black;
+    font-weight: 900;
+}
+
+input {
+    margin: 0.5em;
+    padding: 0.5em;
+    cursor:text;
+    
+}
+
+span {
+    color: #3785c6;
+    border-bottom: 2px solid#3785c6;
+}
+
+i {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+input::placeholder, textarea::placeholder {
+    color:black;
+    font-weight: 500;
+}
+
+
+textarea {
+    margin: 0.5em;
+    padding: 0.5em 0 4em .2em;
+    resize: vertical;
+}
+
+li {
+    list-style: none;
+    margin: 0 1em;
+}
+
+ul {
+    margin: auto;
+    padding: 0;
+}
+
+button {
+    padding: .3em 2em;
+    color: black;
+    font-weight: 900;
+    /* margin: 0 .5em 0.3em .5em; */
+    margin: 0 1em;
+    cursor: pointer;
+}
+
+h1, h3, p {
+    margin: .2em;
+    padding: 0;
+}
+
+/* formatting */
+
+.logo {
+    height: 50px;
+    max-width: auto;
+    object-fit:cover;
+    background-color: rgb(218, 218, 218);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-bottom: 1px solid white;
+}
+
+.wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1em 0 0.5em 0;
+    background-color: rgb(218, 218, 218);
+}
+
+.flex-container, form, #list{
+    display: flex;
+    width: 500px;
+    margin: auto;
+    flex-direction: column;
+    background-color: white;
+    word-wrap: break-word;
+}
+
+#nameContainer, #contactInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    word-wrap: break-word;
+    align-items: end;
+}
+
+#list {
+    background-color: rgb(218, 218, 218);
+}
+
+/* custom styling */
+
+#nameContainer > h1, h3 {
+    font-size: 1.4em;
+    color: #3785c6;
+    border: 1px white solid;
+    font-weight: 900;
+    box-shadow: 1px 1px 1px 1px #3785c6;
+}
+
+#contactInfo > h3 {
+    font-size: 1em
+}
+
+#comments > p {
+    font-weight: 700;
+    margin-left: 1rem;
+}
+
+.callBack {
+    margin-left: 1em;
+    font-weight: 700;
+}
+
+.spacer {
+    margin: 1em;
+    border: 1px solid white;
+    width: 75%;
+    align-self: center;
+}
+
+/* media queries */
+
+@media screen and (min-width: 768px) {
+    body {
+        background-color: white;
+        background: no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 100%;
+    }
+    
+    .flex-container, form, #list{
+        display: flex;
+        width: 90%;
+        flex-direction: column;
+        word-wrap: break-word;
+        background-color: rgb(218, 218, 218);
+    }
+    
+    .name-container{
+        margin: auto;
+    }
+    
+    textarea {
+        margin: 0.5em 6.0586em;
+    } 
+    
+    .callBack {
+        margin: auto;
+    }
+
+    .wrap {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1em 0 0.5em 0;
+        background-color: rgb(218, 218, 218);
+    }
+    
+    input {
+        padding: 0.35em;
+    }
+
+    ul, header, li, nav {
+        margin: auto;
+        background-color: rgb(218, 218, 218);
+    }
+
+    .wrap.btn {
+        display: flex;
+        justify-content: center;
+        padding: 0.5em;
+    }
+    
+    #submitKpi {
+        background-color: white;
+    }
+
+    #nameContainer, #contactInfo, #comments {
+        display: flex;
+        width: 70%;
+        flex-direction: row;
+        justify-content: space-evenly;
+        word-wrap: break-word;
+        margin: auto;
+        align-items: center;
+    }
+    
+    #nameContainer > h1, h3 {
+        font-size: 1.4em;
+        color: black;
+        border: none;
+        border-bottom:  #3785c6 solid;
+        font-weight: 900;
+        box-shadow: none;
+    }
+
+    #comments > p {
+        white-space: pre-wrap;
+        width: 100%
+    }
+
+    .spacer {
+        margin: .5em
+    }
+
+    form > button, textarea {
+        width: 73%;
+        margin: auto;
+        margin-bottom: .5em;
+    }
+}
+
