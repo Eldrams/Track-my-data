@@ -19,25 +19,25 @@
         <header>
             <nav>
                 <div class="logo">
-                    <img class="logo" src="./wyre-removebg-preview.png">
+                    <img class="logo" src="./images/wyre-removebg-preview.png">
                     <h1>Track <span>my</span> data</h1>
                 </div>
                 <ul>
                     <div class="wrap">
                         <button class="decrement" disabled id="decrementDc">-1</button>  
-                        <li id="dataCaptures"><input id="userScoreDc" type="number" placeholder="Enter data captures"></li> 
+                        <li id="dataCaptures"><input id="userInputDc" type="number" placeholder="Enter data captures"></li> 
                         <button id="incrementDc">+1</button>
                     </div>
                     
                     <div class="wrap">
                             <button class="decrement" disabled id="decrementSb">-1</button>
-                            <li id="salaryBoosts"><input placeholder="Enter salary boosts" id="userScoreSb" type="number"></li>
+                            <li id="salaryBoosts"><input placeholder="Enter salary boosts" id="userInputSb" type="number"></li>
                             <button id="incrementSb">+1</button>
                     </div>
 
                     <div class="wrap">
                             <button class="decrement" disabled id="decrementC">-1</button>
-                            <li id="callCurrent"><input placeholder="Enter current calls" id="userScoreC" type="number"></li>
+                            <li id="callCurrent"><input placeholder="Enter current calls" id="userInputC" type="number"></li>
                             <button id="incrementC">+1</button>
                     </div>
                     
@@ -103,11 +103,8 @@
         </label>
         <button>Add Lead</button>
     </form>
-<div id="list">
+<div class="list" id="list">
         <!-- Inject JS -->
-</div>
-<div id="list-comments">
-    <!-- Inject JS -->
 </div>
     <script type="module" src="index.js"></script>
 </body>
