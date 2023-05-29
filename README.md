@@ -7,16 +7,28 @@ An application i made in order to fix an issue myself and collegues were having 
 
 Tech involved:
 
-HTML
-CSS
-Vanilla JavaScript
+- HTML
+
+- CSS
+
+- Vanilla JavaScript
+
+
 
 GET images from unsplash RESTful API for background
+
 Defining a single purpose of each global callback 
+
 Creating and iterating over arrays created by user input
+
 Tracking and updating user information
+
 Manipulating CSS in JS
+
 Testing each function works independently before incorporating it as a callback
+
 Importing fonts from google and font awsome
+
 Bug testing and fixing
+
 Use of IDs and manipulating data based on user input
