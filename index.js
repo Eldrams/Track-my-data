@@ -16,6 +16,7 @@ const submitKpi = document.getElementById('submitKpi')
 const resetStats = document.getElementById('resetStats')
 const BtnSelector = document.getElementsByClassName('wrap') //accessing div buttons for score tracking
 const listBtn = document.getElementsByClassName('list')//access list buttons from template literal
+const appear = document.getElementsByClassName('appear')//added class to html, hides button until submit event is done
 let dcScore = 0
 let sbScore = 0
 let cCurrent = 0
@@ -67,10 +68,14 @@ submitKpi.addEventListener('click', ()=>{
 })
 
 resetStats.addEventListener('click', () => {
-    window.location.reload(); // refresh page
+    dcScore = 0
+    sbScore = 0
+    cCurrent = 0
+    render()
 })
 
 function render(){
+    for (let i of appear){  i.style.display = "block" } //Iterates through buttons and makes them visible
     dataCapture.innerHTML = `<h1>Data Captures: ${dcScore} / 60</h1>` // add a moving target for each band
     salaryBoost.innerHTML = `<h1>Salary Boosts: ${sbScore} / 13</h1>`
     callCurrent.innerHTML = `<h1>Calls Total: ${cCurrent} / 92</h1>`  
@@ -100,9 +105,9 @@ function render(){
 
 for (let i of listBtn){
     i.addEventListener('click', (e) =>{
-        let itemRemove = e.target.getAttribute('data-remove')
-        let itemId = parseInt(itemRemove)
-        let removeIndex = leadsArray.map(item => item.uuid).indexOf(itemId)
+        const itemRemove = e.target.getAttribute('data-remove')
+        const itemId = parseInt(itemRemove)
+        const removeIndex = leadsArray.map(item => item.uuid).indexOf(itemId)
         if (removeIndex > -1){
             leadsArray.splice(removeIndex, 1)
             render()
@@ -114,7 +119,7 @@ for (let i of listBtn){
 
 for (let i of BtnSelector){ //iterating through button tags
     i.addEventListener('click', (e) => { //adding event listner to hold them all
-        let btnId = e.target.getAttribute('id'); //finding the attribut of the click event
+        const btnId = e.target.getAttribute('id'); //finding the attribut of the click event
         if (btnId === decrementDc.id){
             dcScore-- 
             render()

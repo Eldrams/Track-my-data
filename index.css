@@ -61,7 +61,6 @@ button {
     padding: .3em 2em;
     color: black;
     font-weight: 900;
-    /* margin: 0 .5em 0.3em .5em; */
     margin: 0 1em;
     cursor: pointer;
 }
@@ -91,6 +90,14 @@ h1, h3, p {
     justify-content: space-between;
     padding: 1em 0 0.5em 0;
     background-color: rgb(218, 218, 218);
+}
+
+.wrap > button {
+    display: none;
+}
+
+#submitKpi, #resetStats {
+    display: block;
 }
 
 .flex-container, form, #list{
