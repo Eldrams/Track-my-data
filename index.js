@@ -39,6 +39,43 @@ fetch("https://api.unsplash.com/photos/random?client_id=vX0G1CIva3BADMISl-QLDPJC
 }
 // getBackground() limited to 50 calls per hour
 
+
+function saveLeads() {
+    localStorage.setItem('data', JSON.stringify(leadsArray))
+}
+
+function retrieveLeads(){
+    const savedData = localStorage.getItem('data') //GETs data from local storage
+    const savedDataArray = JSON.parse(savedData) //converts data from JSON to data js can use
+    leadsArray = [...savedDataArray] //Spreads the data from myData to leads array
+    let appendNewArray = leadsArray.map(data => { //iterates over leads on start
+    const {firstName, lastName, bussinessName, callBack, email, uuid, notes, telephone} = data 
+    // destructured for the sake of tidiness and readability
+    document.getElementById('savedDataContainer').innerHTML += //Append to DOM
+    `
+        <div id="nameContainer">
+                <h1>${firstName} ${lastName}</h1>
+                <h1>${bussinessName}</h1> 
+                <h1>CB: ${callBack}</h1>
+            </div>
+            <div class="contactInfo" id="contactInfo">
+                <h3>${email}</h3>
+                <h3>No. ${telephone}</h3>
+                <button data-edit="${uuid}" class="editLead"><i data-edit="${uuid}" class="fa-solid fa-pen-to-square"></i></button>
+                <button data-remove="${uuid}" class="deleteLead"><i data-remove="${uuid}" class="fa-solid fa-delete-left"></i></button>
+            </div>
+            <div id="comments"> 
+                <p>${notes}</p>
+        </div>
+        <div class="spacer"></div>
+        `
+
+    })
+    return appendNewArray //returned so that i can call when page is loaded
+} 
+
+retrieveLeads()
+
 form.addEventListener('submit', function (e){
     e.preventDefault() //prevent default submission action
     let leads = { //object template for leads array
@@ -75,6 +112,7 @@ resetStats.addEventListener('click', () => {
 })
 
 function render(){
+    saveLeads()
     for (let i of appear){  i.style.display = "block" } //Iterates through buttons and makes them visible
     dataCapture.innerHTML = `<h1>Data Captures: ${dcScore} / 60</h1>` // add a moving target for each band
     salaryBoost.innerHTML = `<h1>Salary Boosts: ${sbScore} / 13</h1>`
@@ -83,20 +121,22 @@ function render(){
     submitKpi.style.display = 'none' // hides submit button when KPIs are set
     renderList.innerHTML = '' //Clears list after each iteration (prevents duplicates)
     leadsArray.forEach(leads => { //iterates through leads array each time render is called
+    const {firstName, lastName, bussinessName, callBack, email, uuid, notes, telephone} = leads
+    //Destructured for the sake of tidiness and readability
         renderList.innerHTML += `
         <div id="nameContainer">
-                <h1>${leads.firstName} ${leads.lastName}</h1>
-                <h1>${leads.bussinessName}</h1> 
-                <h1>CB: ${leads.callBack}</h1>
+                <h1>${firstName} ${lastName}</h1>
+                <h1>${bussinessName}</h1> 
+                <h1>CB: ${callBack}</h1>
             </div>
             <div class="contactInfo" id="contactInfo">
-                <h3>${leads.email}</h3>
-                <h3>No. ${leads.telephone}</h3>
-                <button data-edit="${leads.uuid}" class="editLead"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button data-remove="${leads.uuid}" class="deleteLead"><i data-remove="${leads.uuid}" class="fa-solid fa-delete-left"></i></button>
+                <h3>${email}</h3>
+                <h3>No. ${telephone}</h3>
+                <button data-edit="${uuid}" class="editLead"><i data-edit="${uuid}" class="fa-solid fa-pen-to-square"></i></button>
+                <button data-remove="${uuid}" class="deleteLead"><i data-remove="${uuid}" class="fa-solid fa-delete-left"></i></button>
             </div>
             <div id="comments"> 
-                <p>${leads.notes}</p>
+                <p>${notes}</p>
         </div>
         <div class="spacer"></div>
         `
