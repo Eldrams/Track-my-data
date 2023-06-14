@@ -43,9 +43,9 @@ fetch("https://api.unsplash.com/photos/random?client_id=vX0G1CIva3BADMISl-QLDPJC
     .then(data => {
         document.body.style.backgroundImage = `url("${data.urls.full}")`
     })
-    .catch(err => console.log("error"))
+    .catch(err => console.log(err))
 }
-// getBackground() limited to 50 calls per hour
+getBackground() //limited to 50 calls per hour
 
 
 function saveLeads() {

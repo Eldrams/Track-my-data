@@ -17,11 +17,18 @@ button, input, textarea{
     font-weight: 900;
 }
 
+input:hover, input:focus, input::selection, 
+textarea:focus,textarea:focus, textarea::selection, 
+button:hover, button:focus, button::selection{
+    color: black;
+    box-shadow: 0 5px 15px rgba(16, 165, 165, 0.4);
+    outline: 2px solid #fff;
+}
+
 input {
     margin: 0.5em;
     padding: 0.5em;
     cursor:text;
-    
 }
 
 span {
@@ -119,16 +126,19 @@ h1, h3, p {
 
 #list {
     background-color: rgb(218, 218, 218);
+    overflow-y: scroll;
+    height: 500px;
 }
 
 /* custom styling */
 
 #nameContainer > h1, h3 {
     font-size: 1.4em;
-    color: #3785c6;
-    border: 1px white solid;
-    font-weight: 900;
-    box-shadow: 1px 1px 1px 1px #3785c6;
+    border-bottom: 1px solid #3785c6;
+}
+
+.editLead, .deleteLead {
+    padding: 0.5em;
 }
 
 #contactInfo > h3 {
@@ -138,6 +148,7 @@ h1, h3, p {
 #comments > p {
     font-weight: 700;
     margin-left: 1rem;
+    white-space: pre-wrap;
 }
 
 .callBack {
@@ -167,10 +178,12 @@ h1, h3, p {
     
     .flex-container, form, #list{
         display: flex;
-        width: 90%;
+        width: 85%;
         flex-direction: column;
         word-wrap: break-word;
         background-color: rgb(218, 218, 218);
+        overflow-y: unset;
+        height: auto;
     }
     
     .name-container{
@@ -208,6 +221,10 @@ h1, h3, p {
         justify-content: center;
         padding: 0.5em;
     }
+    .editLead, .deleteLead {
+        padding: 0.5em;
+        padding: .3em 2em
+    }
     
     #submitKpi {
         background-color: white;
@@ -233,7 +250,6 @@ h1, h3, p {
     }
 
     #comments > p {
-        white-space: pre-wrap;
         width: 100%
     }
 
