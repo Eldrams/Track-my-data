@@ -17,6 +17,14 @@ const resetStats = document.getElementById('resetStats')
 const BtnSelector = document.getElementsByClassName('wrap') //accessing div buttons for score tracking
 const listBtn = document.getElementsByClassName('list')//access list buttons from template literal
 const appear = document.getElementsByClassName('appear')//added class to html, hides button until submit event is done
+const addLead = document.getElementById('addLead')
+const firstName = document.getElementById('firstName') // used multiple times, made global
+const lastName = document.getElementById('lastName')
+const bussinessName = document.getElementById('bussinessName')
+const email = document.getElementById('email')
+const telephone = document.getElementById('number')
+const notes = document.getElementById('notes')
+const callBack = document.getElementById('callBack')
 let dcScore = 0
 let sbScore = 0
 let cCurrent = 0
@@ -74,19 +82,19 @@ function retrieveLeads(){
     return appendNewArray //returned so that i can call when page is loaded
 } 
 
-retrieveLeads()
+retrieveLeads() //Load once as page is initially rendered
 
 form.addEventListener('submit', function (e){
     e.preventDefault() //prevent default submission action
     let leads = { //object template for leads array
-        uuid: parseInt(createId()), //conver to integer
-        firstName: document.getElementById('firstName').value, // takes user input and adds to leadsArray
-        lastName: document.getElementById('lastName').value,
-        bussinessName: document.getElementById('bussinessName').value,
-        email: document.getElementById('email').value,
-        telephone: document.getElementById('number').value,
-        notes: document.getElementById('notes').value,
-        callBack: document.getElementById('callBack').value.replace('T', ' Time: ') // removes the default T and replaces it with new string
+        uuid: parseInt(createId()), //convert to integer
+        firstName: firstName.value, // takes user input and adds to leadsArray
+        lastName: lastName.value,   
+        bussinessName: bussinessName.value,
+        email: email.value,
+        telephone: telephone.value,
+        notes: notes.value,
+        callBack: callBack.value.replace('T', ' Time: ') // removes the default T and replaces it with new string
     }
     leadsArray.unshift(leads) //adds to the begging of the array (most recent lead is at the top)
     form.reset()
@@ -113,8 +121,9 @@ resetStats.addEventListener('click', () => {
 
 function render(){
     saveLeads()
+    addLead.innerHTML = `Add Lead` //update dom
     for (let i of appear){  i.style.display = "block" } //Iterates through buttons and makes them visible
-    dataCapture.innerHTML = `<h1>Data Captures: ${dcScore} / 60</h1>` // add a moving target for each band
+    dataCapture.innerHTML = `<h1>Data Captures: ${dcScore} / 60</h1>` 
     salaryBoost.innerHTML = `<h1>Salary Boosts: ${sbScore} / 13</h1>`
     callCurrent.innerHTML = `<h1>Calls Total: ${cCurrent} / 92</h1>`  
     enableDecrement() //has to take place in render so logic has updated score
@@ -152,6 +161,22 @@ for (let i of listBtn){
             leadsArray.splice(removeIndex, 1)
             render()
         }
+        const itemEdit = e.target.getAttribute('data-edit')
+        const wowzersEdit = parseInt(itemEdit)
+        const editIndex = leadsArray.map(item => item.uuid).indexOf(wowzersEdit)
+        console.log(editIndex)
+        
+        if (editIndex > -1) {
+            document.querySelectorAll('button').disabled = true
+            addLead.innerHTML = `Update Lead`
+            firstName.value = `${leadsArray[editIndex].firstName}`, // Auto fills form with data that is being edited
+            lastName.value = `${leadsArray[editIndex].lastName}`,
+            bussinessName.value = `${leadsArray[editIndex].bussinessName}`,
+            email.value = `${leadsArray[editIndex].email}`,
+            telephone.value = `${leadsArray[editIndex].telephone}`,
+            notes.value = `${leadsArray[editIndex].notes}`
+            leadsArray.splice(editIndex, 1) // Removes item from array after edit
+          }
     })
 }
   
