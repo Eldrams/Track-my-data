@@ -5,6 +5,10 @@ Application for tracking KPI's at my sales job
 
 An application i made in order to fix an issue myself and collegues were having at work. Our IT department has been unable to fix the callback system at work for over a month despite numerous tickets. As well as our KPI's being hidden from us. I made this app in order to track my own leads and KPI's in order to improve my performance and the ease of access to information.
 
+Deployed via netlify:
+
+https://delicate-banoffee-17e233.netlify.app/
+
 Tech involved:
 
 - HTML
@@ -12,7 +16,6 @@ Tech involved:
 - CSS
 
 - Vanilla JavaScript
-
 
 
 GET images from unsplash RESTful API for background
