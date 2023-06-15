@@ -82,7 +82,6 @@ function retrieveLeads(){
     return appendNewArray //returned so that i can call when page is loaded
 } 
 
-retrieveLeads() //Load once as page is initially rendered
 
 form.addEventListener('submit', function (e){
     e.preventDefault() //prevent default submission action
@@ -230,3 +229,4 @@ function enableDecrement(){
     }
 }
 
+retrieveLeads() //Load once as page is initially rendered
