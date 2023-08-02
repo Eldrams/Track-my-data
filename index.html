@@ -25,26 +25,32 @@
                 </div>
                 <ul>
                     <div class="wrap">
-                        <button class="appear" disabled id="decrementDc">-1</button>  
                         <li id="dataCaptures"><input id="userInputDc" type="number" placeholder="Enter data captures"></li> 
-                        <button class="appear" id="incrementDc">+1</button>
+                            <div class="button-container">
+                                <button class="appear" disabled id="decrementDc">-1</button>  
+                                <button class="appear" id="incrementDc">+1</button>
+                            </div>
                     </div>
                     
                     <div class="wrap">
-                            <button class="appear" disabled id="decrementSb">-1</button>
-                            <li id="salaryBoosts"><input placeholder="Enter salary boosts" id="userInputSb" type="number"></li>
-                            <button class="appear" id="incrementSb">+1</button>
+                        <li id="salaryBoosts"><input placeholder="Enter salary boosts" id="userInputSb" type="number"></li>
+                            <div class="button-container">
+                                <button class="appear" disabled id="decrementSb">-1</button>
+                                <button class="appear" id="incrementSb">+1</button>
+                            </div>
                     </div>
 
                     <div class="wrap">
-                            <button class="appear" disabled id="decrementC">-1</button>
-                            <li id="callCurrent"><input placeholder="Enter current calls" id="userInputC" type="number"></li>
-                            <button class="appear" id="incrementC">+1</button>
+                        <li id="callCurrent"><input placeholder="Enter current calls" id="userInputC" type="number"></li>
+                            <div class="button-container">
+                                <button class="appear" disabled id="decrementC">-1</button>
+                                <button class="appear" id="incrementC">+1</button>
+                            </div>  
                     </div>
                     
                 </ul>
             </nav>
-            <div class="wrap btn">
+            <div class="wrap-btn">
                 <button id="submitKpi">Submit</button> 
                 <button id="resetStats">Reset stats to 0</button>
             </div>
@@ -53,55 +59,62 @@
 
 
     <form id="form">
-
+        
     <div class="name-container">
-        <input
-        id="firstName"  
-        type="text"
-        placeholder="First Name"
-        >
-        <label for="firstName"></label>
+        <div class="form-format">
+            <input
+            id="firstName"  
+            type="text"
+            placeholder="First Name"
+            >
+            <label for="firstName"></label>
 
-        <input
-        id="lastName"  
-        type="text"
-        placeholder="Last Name"
-        >
-        <label for="lastName"></label>
+            <input
+            id="lastName"  
+            type="text"
+            placeholder="Last Name"
+            >
+            <label for="lastName"></label>
+        </div>
 
-        <input
-        id="bussinessName"  
-        type="text"
-        placeholder="Bussiness Name"
-        >
-        <label for="bussinessName"></label>
-    
-        <input
-        id="email"  
-        type="email"
-        placeholder="email"
-        >
-        <label for="email"></label>
+        <div class="form-format">
+            <input
+            id="bussinessName"  
+            type="text"
+            placeholder="Bussiness Name"
+            >
+            <label for="bussinessName"></label>
+        
+            <input
+            id="email"  
+            type="email"
+            placeholder="email"
+            >
+            <label for="email"></label>
+        </div>
 
-        <input
-        id="number"  
-        type="number"
-        placeholder="Tel Number"
-        >
-        <label for="number"></label>
+        <div class="form-format">
+            <input
+            id="number"  
+            type="number"
+            placeholder="Tel Number"
+            >
+            <label for="number"></label>
+            <label class="callBack" for="callBack">
+                <input 
+                id="callBack"  
+                type="datetime-local"
+                name="callBack"
+                >
+                </label>
+        </div>
     </div>
         
         <textarea id="notes" placeholder="Notes here..."></textarea>
         <label for="notes"></label>
         
           
-        <label class="callBack" for="callBack">Set a callback time:
-        <input 
-        id="callBack"  
-        type="datetime-local"
-        name="callBack"
-        >
-        </label>
+        
         <button id="addLead">Add Lead</button>
     </form>
 <div class="list" id="list">

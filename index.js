@@ -9,9 +9,6 @@ const decrementC = document.getElementById('decrementC')
 const incrementDc = document.getElementById('incrementDc')
 const incrementSb = document.getElementById('incrementSb')
 const incrementC = document.getElementById('incrementC')
-const userScoreDc = document.getElementById('userScoreDc')
-const userScoreSb = document.getElementById('userScoreSb')
-const userScoreC = document.getElementById('userScoreC')
 const submitKpi = document.getElementById('submitKpi')
 const resetStats = document.getElementById('resetStats')
 const BtnSelector = document.getElementsByClassName('wrap') //accessing div buttons for score tracking
@@ -24,7 +21,24 @@ const bussinessName = document.getElementById('bussinessName')
 const email = document.getElementById('email')
 const telephone = document.getElementById('number')
 const notes = document.getElementById('notes')
-const callBack = document.getElementById('callBack')
+const callBack = document.getElementById('callBack') 
+const thresholdsConfig = {
+    dataCapture: [
+      { score: 60, color: "#FFD700" },
+      { score: 50, color: "green" },
+      { score: 40, color: "orange" },
+    ],
+    salaryBoost: [
+      { score: 20, color: "#FFD700" },
+      { score: 15, color: "green" },
+      { score: 10, color: "orange" },
+    ],
+    callCurrent: [
+      { score: 92, color: "#FFD700" },
+      { score: 60, color: "green" },
+      { score: 40, color: "orange" },
+    ],
+  };
 let dcScore = 0
 let sbScore = 0
 let cCurrent = 0
@@ -34,6 +48,7 @@ function createId(){
   return  Math.random()* 1000000000 // creates random number to be used as id
 }
 
+// Function to get background image using unsplash API
 function getBackground(){
 fetch("https://api.unsplash.com/photos/random?client_id=vX0G1CIva3BADMISl-QLDPJCT7ICU4IYkoeQJnvqKJY&orientation=landscape&query=electric cars", {method: "GET", headers: {
     "Content-Type": "application/json",
@@ -45,7 +60,7 @@ fetch("https://api.unsplash.com/photos/random?client_id=vX0G1CIva3BADMISl-QLDPJC
     })
     .catch(err => console.log(err))
 }
-getBackground() //limited to 50 calls per hour
+
 
 
 function saveLeads() {
@@ -83,6 +98,7 @@ function retrieveLeads(){
 } 
 
 
+
 form.addEventListener('submit', function (e){
     e.preventDefault() //prevent default submission action
     let leads = { //object template for leads array
@@ -99,8 +115,10 @@ form.addEventListener('submit', function (e){
     form.reset()
     render()
 })
+submitKpi.addEventListener('click', submitKPIs)
+resetStats.addEventListener('click', resetScores)
 
-submitKpi.addEventListener('click', ()=>{
+function submitKPIs(){
     if (userInputDc.value.length == 0 || userInputSb.value.length == 0 || userInputC.value.length == 0){
         alert('Enter current scores')
     }else{
@@ -108,23 +126,43 @@ submitKpi.addEventListener('click', ()=>{
         sbScore += parseInt(userInputSb.value) 
         cCurrent += parseInt(userInputC.value)
         render() // updates page
-    }
-})
+    } 
+}
 
-resetStats.addEventListener('click', () => {
+function resetScores(){
     dcScore = 0
     sbScore = 0
     cCurrent = 0
     render()
-})
+}
+
+// updates the color based on our commision bands
+function getColorStyle(score, thresholds) {
+    const style = {
+      color: "black",
+    };
+  
+    for (const threshold of thresholds) { //iterated through the threshhold config, to set the inline style based on scores
+      if (score >= threshold.score) {
+        style.color = threshold.color;
+        break;
+      }
+    }
+  
+    return style;
+  }
+
 
 function render(){
     saveLeads()
     addLead.innerHTML = `Add Lead` //update dom
     for (let i of appear){  i.style.display = "block" } //Iterates through buttons and makes them visible
-    dataCapture.innerHTML = `<h1>Data Captures: ${dcScore} / 60</h1>` 
-    salaryBoost.innerHTML = `<h1>Salary Boosts: ${sbScore} / 13</h1>`
-    callCurrent.innerHTML = `<h1>Calls Total: ${cCurrent} / 92</h1>`  
+    const dcStyle = getColorStyle(dcScore, thresholdsConfig.dataCapture); //uses helper function to determine inline style
+    const sbStyle = getColorStyle(sbScore, thresholdsConfig.salaryBoost);// this is based on threshhold config
+    const ccStyle = getColorStyle(cCurrent, thresholdsConfig.callCurrent);
+    dataCapture.innerHTML = `<h1 style="color: ${dcStyle.color}">Data Captures: ${dcScore} / 60</h1>` 
+    salaryBoost.innerHTML = `<h1 style="color: ${sbStyle.color}">Salary Boosts: ${sbScore} / 20</h1>`
+    callCurrent.innerHTML = `<h1 style="color: ${ccStyle.color}">Calls Total: ${cCurrent} / 92</h1>`  
     enableDecrement() //has to take place in render so logic has updated score
     submitKpi.style.display = 'none' // hides submit button when KPIs are set
     renderList.innerHTML = '' //Clears list after each iteration (prevents duplicates)
@@ -153,21 +191,20 @@ function render(){
 
 for (let i of listBtn){
     i.addEventListener('click', (e) =>{
-        const itemRemove = e.target.getAttribute('data-remove')
-        const itemId = parseInt(itemRemove)
-        const removeIndex = leadsArray.map(item => item.uuid).indexOf(itemId)
+        const itemRemove = e.target.getAttribute('data-remove')//finds DOM element based on attribute
+        const itemId = parseInt(itemRemove) //solved a bug that would prevent me from finding the index by converting to an integer
+        const removeIndex = leadsArray.map(item => item.uuid).indexOf(itemId) //maps over array and then finds the current index
         if (removeIndex > -1){
-            leadsArray.splice(removeIndex, 1)
+            leadsArray.splice(removeIndex, 1) //removes selected index
             render()
         }
         const itemEdit = e.target.getAttribute('data-edit')
         const wowzersEdit = parseInt(itemEdit)
-        const editIndex = leadsArray.map(item => item.uuid).indexOf(wowzersEdit)
-        console.log(editIndex)
+        const editIndex = leadsArray.map(item => item.uuid).indexOf(wowzersEdit) //see above
         
         if (editIndex > -1) {
-            document.querySelectorAll('button').disabled = true
-            addLead.innerHTML = `Update Lead`
+            document.querySelectorAll('button').disabled = true //disable buttons to prevent a bug when selected
+            addLead.innerHTML = `Update Lead` // multiple times it deletes the first item in the array @ index -1
             firstName.value = `${leadsArray[editIndex].firstName}`, // Auto fills form with data that is being edited
             lastName.value = `${leadsArray[editIndex].lastName}`,
             bussinessName.value = `${leadsArray[editIndex].bussinessName}`,
@@ -183,7 +220,7 @@ for (let i of listBtn){
 
 for (let i of BtnSelector){ //iterating through button tags
     i.addEventListener('click', (e) => { //adding event listner to hold them all
-        const btnId = e.target.getAttribute('id'); //finding the attribut of the click event
+        const btnId = e.target.getAttribute('id'); //finding the attribute of the click event
         if (btnId === decrementDc.id){
             dcScore-- 
             render()
@@ -229,4 +266,5 @@ function enableDecrement(){
     }
 }
 
+getBackground() //limited to 50 calls per hour
 retrieveLeads() //Load once as page is initially rendered

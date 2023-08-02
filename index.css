@@ -22,7 +22,7 @@ textarea:focus,textarea:focus, textarea::selection,
 button:hover, button:focus, button::selection{
     color: black;
     box-shadow: 0 5px 15px rgba(16, 165, 165, 0.4);
-    outline: 2px solid #fff;
+    outline: 2px solid #9327d1;
 }
 
 input {
@@ -47,6 +47,11 @@ input::placeholder, textarea::placeholder {
     font-weight: 500;
 }
 
+.form-format {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 textarea {
     margin: 0.5em;
@@ -88,23 +93,33 @@ h1, h3, p {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    border-bottom: 1px solid white;
+    /* border-bottom: 1px solid white; */
 }
 
 .wrap {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     padding: 1em 0 0.5em 0;
     background-color: rgb(218, 218, 218);
+    
+}
+.wrap-btn{
+    display: flex;
+    justify-content: center;
+    margin: 1em 0;
 }
 
-.wrap > button {
-    display: none;
+.button-container > button {
+    margin: .7em 1em
 }
 
 #submitKpi, #resetStats {
     display: block;
+}
+#addLead{
+    margin-bottom: .5em;
 }
 
 .flex-container, form, #list{
@@ -152,7 +167,6 @@ h1, h3, p {
 }
 
 .callBack {
-    margin-left: 1em;
     font-weight: 700;
 }
 
@@ -161,6 +175,10 @@ h1, h3, p {
     border: 1px solid white;
     width: 75%;
     align-self: center;
+}
+
+.appear {
+    display: none
 }
 
 /* media queries */
@@ -199,12 +217,26 @@ h1, h3, p {
     }
 
     .wrap {
-        display: inline-flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        padding: 1em 0 0.5em 0;
+        padding: 0em 0em;
+        margin: 1em 1em;
         background-color: rgb(218, 218, 218);
+        font-size: .7rem;
+        background-color: #fff;
+        border-radius: 10px
+    }
+    .wrap li {
+        background-color: #fff;
+        
+    }
+    button {
+        padding: 0.1rem 1rem;
+        margin: 0.2rem;
+    }
+    .button-container {
+         display: flex;
     }
     
     input {
@@ -216,10 +248,11 @@ h1, h3, p {
         background-color: rgb(218, 218, 218);
     }
 
-    .wrap.btn {
+    .wrap-btn {
         display: flex;
         justify-content: center;
         padding: 0.5em;
+        margin: 0;
     }
     .editLead, .deleteLead {
         padding: 0.5em;
@@ -257,10 +290,56 @@ h1, h3, p {
         margin: .5em auto;
     }
 
+    #addLead {
+        padding: .5rem 1rem;
+    }
     form > button, textarea {
-        width: 73%;
+        width: 40%;
         margin: auto;
-        margin-bottom: .5em;
+        margin-bottom: 10px ;
+    }
+    #list, .list {
+        width: 85%;
+        background-color: whitesmoke;
     }
 }
 
+@media screen and (min-width: 1024px) {
+    .wrap {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5em 2em;
+        background-color: rgb(218, 218, 218);
+        font-size: .7rem;
+        background-color: whitesmoke;
+        border-radius: 10px
+    }
+    .wrap li {
+        background-color: whitesmoke;
+        
+    }
+    button {
+        padding: 0.1rem 1rem;
+        margin: 0.2rem;
+    }
+  
+    #addLead {
+        padding: .5rem 1rem;
+    }
+    form > button, textarea {
+        width: 40%;
+    }
+}
+
+@media screen and (min-width: 1201px) {
+    .wrap{
+        padding: 2rem;
+        font-size: .9rem;
+    }
+    button{
+        padding: .5rem 2rem;
+        margin: .5rem 1rem;
+    }
+}

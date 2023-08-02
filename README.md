@@ -3,7 +3,7 @@ Application for tracking KPI's at my sales job
 
 <!-- Description -->
 
-An application i made in order to fix an issue myself and collegues were having at work. Our IT department has been unable to fix the callback system at work for over a month despite numerous tickets. As well as our KPI's being hidden from us. I made this app in order to track my own leads and KPI's in order to improve my performance and the ease of access to information.
+An application i made in order to fix an issue myself and collegues were having at work. Our IT department has been unable to fix the callback system at work for over a month despite numerous tickets. As well as our KPI's not being readily available to us. I made this app in order to track my own leads and KPI's as well as my team in order to improve our performance and the ease of access to information.
 
 Deployed via netlify:
 
@@ -35,3 +35,15 @@ Importing fonts from google and font awsome
 Bug testing and fixing
 
 Use of IDs and manipulating data based on user input
+
+------------------------------------------------------------------------------------------
+
+Future additions:
+
+- add a realtime database instead of local storage (based on approval from managment)
+
+- add user authentification
+
+- edit styling/accessibility based on user feedback
+
+- potentially add some additional functionality based on feedback
