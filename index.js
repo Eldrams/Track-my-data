@@ -43,9 +43,11 @@ let dcScore = 0
 let sbScore = 0
 let cCurrent = 0
 let leadsArray = []
+import {getLeads, addLeads, deleteLead} from './firebase.js'
+
 
 function createId(){
-  return  Math.random()* 1000000000 // creates random number to be used as id
+  return Math.random()* 1000000000 // creates random number to be used as id
 }
 
 // Function to get background image using unsplash API
@@ -58,20 +60,13 @@ fetch("https://api.unsplash.com/photos/random?client_id=vX0G1CIva3BADMISl-QLDPJC
     .then(data => {
         document.body.style.backgroundImage = `url("${data.urls.full}")`
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err.message))
 }
 
-
-
-function saveLeads() {
-    localStorage.setItem('data', JSON.stringify(leadsArray))
-}
-
-function retrieveLeads(){
-    const savedData = localStorage.getItem('data') //GETs data from local storage
-    const savedDataArray = JSON.parse(savedData) //converts data from JSON to data js can use
-    leadsArray = [...savedDataArray] //Spreads the data from myData to leads array
-    let appendNewArray = leadsArray.map(data => { //iterates over leads on start
+async function retrieveLeads(){
+    const firebaseLeads = await getLeads() //retrieving the returned array
+    leadsArray = [...firebaseLeads] //Spreads the data from myData to leads array
+    let appendNewArray = firebaseLeads.map(data => { //iterates over leads on start
     const {firstName, lastName, bussinessName, callBack, email, uuid, notes, telephone} = data 
     // destructured for the sake of tidiness and readability
     document.getElementById('savedDataContainer').innerHTML += //Append to DOM
@@ -79,7 +74,7 @@ function retrieveLeads(){
         <div id="nameContainer">
                 <h1>${firstName} ${lastName}</h1>
                 <h1>${bussinessName}</h1> 
-                <h1>CB: ${callBack}</h1>
+                <h1 style="font-weight: 700">CB: ${callBack}</h1>
             </div>
             <div class="contactInfo" id="contactInfo">
                 <h3>${email}</h3>
@@ -99,7 +94,7 @@ function retrieveLeads(){
 
 
 
-form.addEventListener('submit', function (e){
+form.addEventListener('submit', async function (e){
     e.preventDefault() //prevent default submission action
     let leads = { //object template for leads array
         uuid: parseInt(createId()), //convert to integer
@@ -113,8 +108,14 @@ form.addEventListener('submit', function (e){
     }
     leadsArray.unshift(leads) //adds to the begging of the array (most recent lead is at the top)
     form.reset()
+    try {
+     await addLeads(leads)
+    } catch (err){
+        console.log("Firebase could not be reached:", err.message)
+    }
     render()
 })
+
 submitKpi.addEventListener('click', submitKPIs)
 resetStats.addEventListener('click', resetScores)
 
@@ -152,9 +153,7 @@ function getColorStyle(score, thresholds) {
     return style;
   }
 
-
 function render(){
-    saveLeads()
     addLead.innerHTML = `Add Lead` //update dom
     for (let i of appear){  i.style.display = "block" } //Iterates through buttons and makes them visible
     const dcStyle = getColorStyle(dcScore, thresholdsConfig.dataCapture); //uses helper function to determine inline style
@@ -173,7 +172,7 @@ function render(){
         <div id="nameContainer">
                 <h1>${firstName} ${lastName}</h1>
                 <h1>${bussinessName}</h1> 
-                <h1>CB: ${callBack}</h1>
+                <h1 style="font-weight: 700" >CB: ${callBack}</h1>
             </div>
             <div class="contactInfo" id="contactInfo">
                 <h3>${email}</h3>
@@ -196,11 +195,12 @@ for (let i of listBtn){
         const removeIndex = leadsArray.map(item => item.uuid).indexOf(itemId) //maps over array and then finds the current index
         if (removeIndex > -1){
             leadsArray.splice(removeIndex, 1) //removes selected index
+            deleteLead(itemId)
             render()
         }
         const itemEdit = e.target.getAttribute('data-edit')
-        const wowzersEdit = parseInt(itemEdit)
-        const editIndex = leadsArray.map(item => item.uuid).indexOf(wowzersEdit) //see above
+        const editId = parseInt(itemEdit)
+        const editIndex = leadsArray.map(item => item.uuid).indexOf(editId) //see above
         
         if (editIndex > -1) {
             document.querySelectorAll('button').disabled = true //disable buttons to prevent a bug when selected
@@ -211,8 +211,10 @@ for (let i of listBtn){
             email.value = `${leadsArray[editIndex].email}`,
             telephone.value = `${leadsArray[editIndex].telephone}`,
             notes.value = `${leadsArray[editIndex].notes}`
+            deleteLead(editId) //This is probably not the best solution, read more of the docs 
             leadsArray.splice(editIndex, 1) // Removes item from array after edit
           }
+
     })
 }
   

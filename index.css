@@ -14,7 +14,7 @@ button, input, textarea{
     border: none;
     background-color: #3785c6;
     color:black;
-    font-weight: 900;
+    font-weight: 600;
 }
 
 input:hover, input:focus, input::selection, 
@@ -89,11 +89,11 @@ h1, h3, p {
     max-width: auto;
     object-fit:cover;
     background-color: rgb(218, 218, 218);
-    padding: 10px;
+    padding: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    /* border-bottom: 1px solid white; */
+    
 }
 
 .wrap {
@@ -161,13 +161,13 @@ h1, h3, p {
 }
 
 #comments > p {
-    font-weight: 700;
+    font-weight: 500;
     margin-left: 1rem;
     white-space: pre-wrap;
 }
 
 .callBack {
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .spacer {
@@ -278,7 +278,7 @@ h1, h3, p {
         color: black;
         border: none;
         border-bottom:  #3785c6 solid;
-        font-weight: 900;
+        font-weight: 500;
         box-shadow: none;
     }
 
