@@ -36,6 +36,10 @@ Bug testing and fixing
 
 Use of IDs and manipulating data based on user input
 
+Reading and writing to noSQL database
+
+Made use of asynchronous JavaScript to manipulate data
+
 ------------------------------------------------------------------------------------------
 
 Future additions:
@@ -47,3 +51,13 @@ Future additions:
 - edit styling/accessibility based on user feedback
 
 - potentially add some additional functionality based on feedback
+
+------------------------------------------------------------------------------------------
+
+Update:
+
+- managment declined the offer of me adding a database to store information as it could be a potential breach of GDPR
+
+- I have created a Fork "Version 1.1" that has added firebase just to see if i could (https://github.com/Eldrams/Track-my-data/tree/v-1.1)
+
+
