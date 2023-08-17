@@ -15,6 +15,7 @@ const BtnSelector = document.getElementsByClassName('wrap') //accessing div butt
 const listBtn = document.getElementsByClassName('list')//access list buttons from template literal
 const appear = document.getElementsByClassName('appear')//added class to html, hides button until submit event is done
 const addLead = document.getElementById('addLead')
+const logOut = document.getElementById('logOut')
 const firstName = document.getElementById('firstName') // used multiple times, made global
 const lastName = document.getElementById('lastName')
 const bussinessName = document.getElementById('bussinessName')
@@ -43,11 +44,13 @@ let dcScore = 0
 let sbScore = 0
 let cCurrent = 0
 let leadsArray = []
-import {getLeads, addLeads, deleteLead} from './firebase.js'
+import {getLeads, addLeads, deleteLead, auth, signOutUser} from './firebase.js'
 
+
+logOut.addEventListener('click', signOutUser)
 
 function createId(){
-  return Math.random()* 1000000000 // creates random number to be used as id
+  return Math.random() * 1000000000 // creates random number to be used as id
 }
 
 // Function to get background image using unsplash API
@@ -63,10 +66,15 @@ fetch("https://api.unsplash.com/photos/random?client_id=vX0G1CIva3BADMISl-QLDPJC
     .catch(err => console.log(err.message))
 }
 
+console.log(auth.currentUser)
+
 async function retrieveLeads(){
     const firebaseLeads = await getLeads() //retrieving the returned array
-    leadsArray = [...firebaseLeads] //Spreads the data from myData to leads array
-    let appendNewArray = firebaseLeads.map(data => { //iterates over leads on start
+    const uid = await getLeads(auth.currentUser.uid)
+    console.log(getLeads(uid))
+    console.log(uid)
+    leadsArray = [...uid] //Spreads the data from myData to leads array
+    let appendNewArray = uid.map(data => { //iterates over leads on start
     const {firstName, lastName, bussinessName, callBack, email, uuid, notes, telephone} = data 
     // destructured for the sake of tidiness and readability
     document.getElementById('savedDataContainer').innerHTML += //Append to DOM
@@ -109,9 +117,11 @@ form.addEventListener('submit', async function (e){
     leadsArray.unshift(leads) //adds to the begging of the array (most recent lead is at the top)
     form.reset()
     try {
-     await addLeads(leads)
+        const uid = auth.currentUser.uid
+        await addLeads(leads, uid)
+        
     } catch (err){
-        console.log("Firebase could not be reached:", err.message)
+        alert("Database could not be reached:", err.message)
     }
     render()
 })
@@ -195,7 +205,8 @@ for (let i of listBtn){
         const removeIndex = leadsArray.map(item => item.uuid).indexOf(itemId) //maps over array and then finds the current index
         if (removeIndex > -1){
             leadsArray.splice(removeIndex, 1) //removes selected index
-            deleteLead(itemId)
+            const uid = auth.currentUser.uid
+            deleteLead(itemId, uid)
             render()
         }
         const itemEdit = e.target.getAttribute('data-edit')
@@ -211,7 +222,8 @@ for (let i of listBtn){
             email.value = `${leadsArray[editIndex].email}`,
             telephone.value = `${leadsArray[editIndex].telephone}`,
             notes.value = `${leadsArray[editIndex].notes}`
-            deleteLead(editId) //This is probably not the best solution, read more of the docs 
+            const uid = auth.currentUser.uid
+            deleteLead(editId, uid) //This is probably not the best solution, read more of the docs 
             leadsArray.splice(editIndex, 1) // Removes item from array after edit
           }
 
@@ -268,5 +280,5 @@ function enableDecrement(){
     }
 }
 
-getBackground() //limited to 50 calls per hour
+// getBackground() //limited to 50 calls per hour
 retrieveLeads() //Load once as page is initially rendered

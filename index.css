@@ -89,7 +89,7 @@ h1, h3, p {
     max-width: auto;
     object-fit:cover;
     background-color: rgb(218, 218, 218);
-    padding: 2rem;
+    padding: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-evenly;

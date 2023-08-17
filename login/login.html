@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./login.css">
+</head>
+
+<!-- sign up -->
+
+<body class="login">
+    <div class="container">
+        <h2 class="text-center">sign up</h2>
+        <div id="signUpError" class="error-message"></div>
+        <div id="signedUp" class=""></div>
+        <form id="form" class="loginForm">
+            <div class="input-group">
+                <label for="email" class="label">Username</label>
+                <input type="text" id="email" class="input">
+                <span class="error-message"></span>
+            </div>
+            <br>
+            <div class="input-group">
+                <label for="password" class="label">Password</label>
+                <input type="password" id="password" class="input">
+                <span class="error-message"></span>
+            </div>
+            <br>
+            <button class="button" type="submit">Sign up</button>
+        </form>
+        <a id="genLoginForm">Already have an account? Log In here</a>
+    </div>
+
+
+    <!-- login -->
+    
+
+    <script type="module" src="./login.js"></script>
+</body>
+</html>
