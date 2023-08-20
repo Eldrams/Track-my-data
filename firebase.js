@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js'
-import { getFirestore, where, collection, getDocs, setDoc, doc, deleteDoc, orderBy, addDoc, query } from 'https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js'
+import { getFirestore, collection, getDocs, setDoc, doc, deleteDoc, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js'
 import {signOut, connectAuthEmulator, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithCustomToken} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyD9eRoBoSVbnpwNC2TPJJtRbr9WXDUDlsQ",
@@ -14,67 +14,53 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-export const auth = getAuth(app)
-const leadsCollection = collection(db, "leadsArray");
-const usersCollection = collection(db, "users");
+export const auth = getAuth(app);
 
-// Clean up time
-
-//add a delete account perm button
-//work on routing and checking if logged in 
-//add logout button functionality
-// fix order by callback date
-// fix the issue of undefined data (check for it in this file)
-// remove console.logs
-// delete collections
-// write up notes
-//error handling
-
+// **************** Helper function (Store current user) **************** \\
 
 function uidProm(uid){
-  return collection(db, `${uid}`)
+  return collection(db, `${uid}`); //upon login the UID of the user is passed to the function
 }
 
+// **************** Manipulate data **************** \\
+
 export async function getLeads(uid) {
-  const leadsSnapshot = await getDocs((uidProm(uid))); //accesses leadsArray collection
-  const leadsList = leadsSnapshot.docs.map(doc => ({ //maps over leadsSnpshot array and spreads it
-    ...doc.data()
+  const leadsSnapshot = await orderByDate(uid); //awaits orderByDate to recieve and order the data
+  const leadsList = leadsSnapshot.docs.map(doc => ({
+    ...doc.data() //iterates over it and gets passed to retrieveLeads
   }));
-  return leadsList; //returned for later use
+  return leadsList; // currently throws error when new sign up loads in as there is no Current collection
 }
 
 // uses firebase keywords to return the leads in order of callback times
-function orderByDate(){
-  const q = query(collection(db, `${uidProm()}`), orderBy('callBack')); 
-  return q
+function orderByDate(uid) {
+  const q = query(uidProm(uid), orderBy('callBack', 'asc'));
+  return getDocs(q); // Execute the query and return the sorted results
 }
 
 export async function deleteLead(itemId, uid){
-  await deleteDoc(doc(db, `${uid}`, itemId.toString())) //ID in leadsArray has to be a string for firebase
-  .then(() => console.log("successfully deleted lead"))
-  .catch(() => console.log('unable to delete lead', err.message))
+  await deleteDoc(doc(db, `${uid}`, itemId.toString())) //ID in collection array has to be a string for firebase
+  .catch(() => alert('unable to delete lead', err.message))
 }
 
 export async function addLeads(leads, uid){
-  await setDoc(doc(db, `${uid}`, leads.uuid.toString()), leads) //ID in leadsArray has to be a string for firebase
-  .then(() => console.log("successfully added lead"))
+  await setDoc(doc(db, `${uid}`, leads.uuid.toString()), leads) 
   .catch((err) => console.log('Unable to add new leads', err.message))
 }
 
 // **************** Login.js **************** \\
 
 function redirect() {
-  window.location.replace("../index.html") 
+  window.location.replace("../index.html") //redirects to the index.html page
 } 
 
 export function signUp(email, password){
-  createUserWithEmailAndPassword(auth, email, password)
+  createUserWithEmailAndPassword(auth, email, password) //Import from /auth, saves the user info to my console
   .then((userInfo) => {
-    document.getElementById('signedUp').innerHTML = "signed up successfully"
+    document.getElementById('signedUp').innerHTML = "Signed up successfully" //provides user feedback
     const uid = userInfo.user.uid
-    saveData(email, password, uid)
-    setTimeout(redirect, 1500)
-    return uidProm(email)
+    setTimeout(redirect, 1500) //time to read the message beforre redirect
+    return uidProm(uid) // pass user to uidPromise
   })
   .catch((err) => document.getElementById('signUpError').innerHTML = `
   ${err.code === "auth/email-already-in-use" 
@@ -90,74 +76,44 @@ export function login(email, password){
   .then((userInfo) => {
       document.getElementById("loginSuccess").innerHTML = 'Logging you in...'
       const uid = userInfo.user.uid
-      console.log(auth.currentUser)
       setTimeout(redirect, 1500)
-      return uidProm(uid)
+      return uidProm(uid) //the same minus savedata as the info is already on there account
   })
   .catch((err) =>  document.getElementById("loginError").innerHTML = `
   ${err.code === "auth/user-not-found" 
   ? "There is no account with these credentials" 
-  : err.message}
+  : ""}
   ${(err.code === "auth/wrong-password" 
   ? "Password is incorrect, please try again" 
-  : err.code)}`)
+  : err.message)}`)
 }
 
 
  export function signOutUser(){
   signOut(auth)
     .then(() => {
-      console.log('signed out')
-      setTimeout(window.location.replace("./login/login.html"), 1500)
-
+      setTimeout(window.location.replace("./login/login.html"), 1500) //signout and return to login page
     })
-    .catch((err) => console.log('There was a network error', err.message))
+    .catch((err) => alert('There was a network error', err.message))
 }
 
-async function saveData(email, password, uid){
-  await addDoc(collection(db, `${uid}`), {
-    email: email,
-    password: password,
-    uid
-  })
-  .then((docRef) =>{ 
-    console.log("complete", docRef.id)
-  })
-  .catch((err) => {
-    console.log(err.message)
-  })
+// **************** Delete data **************** \\
+
+export async function deleteData(uid) {
+  const userSnapshot = await getDocs(uidProm(uid));
+  const userList = userSnapshot.docs.map(doc => ({
+    ...doc.data()
+  }));
+
+  const deletePromises = userList.map(item => deleteLead(item.uuid, uid));
+  await Promise.all(deletePromises);
 }
 
-// async function readData(email) {
-//   const userSnapshot = await getDocs(uidProm(email)); //accesses usersCollection collection
-//   const userList = userSnapshot.docs.map(doc => ({ //maps over collectionSnapshot array and spreads it
-//     ...doc.data(),
-//   }))
-//   console.log(readData())
-//   return userList //returned for later use
-// }
-
-
-// async function createCollection(){
-//  const userList = await readData()
-//  userList.forEach(item => item.email)
-// }
-
-// function updateData(){
-//   db.collection('users').doc(enter iD here)
-//   .update({
-//     email: "somethinf",
-//     password: "something1"
-//   })
-//   .then(() =>{
-//     console.log("data updated")
-//   })
-// }
-// async function deleteData(a){
-//   await deleteDoc(doc(db, "users", `${a}`))
-//   // console.log(findUser)
-//   .then(() => ('data deleted'))
-//   .catch((err) => console.log(err.message))
-// }
-
-
+export async function deleteUser(user) {
+  try {
+    await user.delete();
+    console.log("User deleted successfully");
+  } catch (error) {
+    console.error("Error deleting user:", error);
+  }
+}

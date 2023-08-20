@@ -6,8 +6,8 @@
 }
 
 body {
-    font-family: "Open Sans", sans-serif;
-    background-color: rgb(0, 132, 255);
+    font-family: 'Inter', sans-serif;
+    background-color: #3785c6;
     font-size: 16px;
 }
 
@@ -72,6 +72,7 @@ input:focus {
 .button {
     background-color: rgb(0, 132, 255);
     padding: 1rem;
+    margin-bottom: 1rem;
     border: none;
     color: #fff;
     font-weight: bold;
@@ -82,6 +83,22 @@ input:focus {
     font-size: 1rem;
 }
 
+a {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 button:hover {
     filter: brightness(110%);
     }
+
+
+.loginHere { 
+    line-height: 1.7rem;
+}
+
+#loginSuccess, #signedUp {
+    margin: 1rem 0;
+    font-weight: 600;
+    font-size: 1.2rem;
+}

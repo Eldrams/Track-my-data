@@ -35,8 +35,10 @@ function renderLogin(){
                     <span class="error-message"></span>
                 </div>
                 <br>
-                <button class="button" type="submit">login</button>
+                <button class="button" type="submit">Login</button>
             </form>
+            <a class="loginHere" href="./login.html">Don't have an account? Sign up here</a>
+
         </div>
 
         <div class="container">

@@ -23,7 +23,7 @@ const email = document.getElementById('email')
 const telephone = document.getElementById('number')
 const notes = document.getElementById('notes')
 const callBack = document.getElementById('callBack') 
-const thresholdsConfig = {
+const thresholdsConfig = { //Styles and score threshholds, used for updating DOM conditionally
     dataCapture: [
       { score: 60, color: "#FFD700" },
       { score: 50, color: "green" },
@@ -43,11 +43,20 @@ const thresholdsConfig = {
 let dcScore = 0
 let sbScore = 0
 let cCurrent = 0
-let leadsArray = []
-import {getLeads, addLeads, deleteLead, auth, signOutUser} from './firebase.js'
+let leadsArray = [] //I could feasibly remove this and everything work
+//I think the app working while offline is important however, even if it is at limited capacity
 
+import {getLeads, addLeads, deleteLead, auth, signOutUser, deleteUser, deleteData} from './firebase.js' //all imports required for firebase
 
-logOut.addEventListener('click', signOutUser)
+// ************** Fetch requests and ID creation ************** \\
+
+async function userLogged(){
+    if (await auth.currentUser === null){
+        alert("You are not currently signed in, if you wish to use this service please create one if you only wish to test this service go to the login page and use the test account" )
+        window.location.replace("./login/login.html")
+    }
+} 
+
 
 function createId(){
   return Math.random() * 1000000000 // creates random number to be used as id
@@ -63,17 +72,14 @@ fetch("https://api.unsplash.com/photos/random?client_id=vX0G1CIva3BADMISl-QLDPJC
     .then(data => {
         document.body.style.backgroundImage = `url("${data.urls.full}")`
     })
-    .catch(err => console.log(err.message))
+    .catch(err => console.log("There was an issue loading your background", err.message))
 }
 
-console.log(auth.currentUser)
 
 async function retrieveLeads(){
-    const firebaseLeads = await getLeads() //retrieving the returned array
-    const uid = await getLeads(auth.currentUser.uid)
-    console.log(getLeads(uid))
-    console.log(uid)
-    leadsArray = [...uid] //Spreads the data from myData to leads array
+    const firebaseLeads = await getLeads() //retrieving the returned array, I have to await getLeads()
+    const uid = await getLeads(auth.currentUser.uid)// before i am able to pass the uid
+    leadsArray = [...uid] //Spreads the data from getLeads() to leads array
     let appendNewArray = uid.map(data => { //iterates over leads on start
     const {firstName, lastName, bussinessName, callBack, email, uuid, notes, telephone} = data 
     // destructured for the sake of tidiness and readability
@@ -97,10 +103,11 @@ async function retrieveLeads(){
         `
 
     })
-    return appendNewArray //returned so that i can call when page is loaded
+    render()
+    return appendNewArray //returned so that i can call while page is loading
 } 
 
-
+// ************** KPI's and event listeners ************** \\
 
 form.addEventListener('submit', async function (e){
     e.preventDefault() //prevent default submission action
@@ -117,17 +124,42 @@ form.addEventListener('submit', async function (e){
     leadsArray.unshift(leads) //adds to the begging of the array (most recent lead is at the top)
     form.reset()
     try {
-        const uid = auth.currentUser.uid
-        await addLeads(leads, uid)
+        const uid = auth.currentUser.uid //finds current user 
+        await addLeads(leads, uid) //pass the leads object and current user info
         
     } catch (err){
-        alert("Database could not be reached:", err.message)
+        alert("Database could not be reached:", err.message)// uh oh
     }
     render()
 })
 
+// ************** Event listeners ************** \\
+
 submitKpi.addEventListener('click', submitKPIs)
 resetStats.addEventListener('click', resetScores)
+logOut.addEventListener('click', signOutUser) //signs out user
+document.getElementById('deleteAccount').addEventListener('click', async () => {
+    const user = auth.currentUser;
+
+    if (user) {
+      const confirmed = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+      
+      if (confirmed) {
+        try {
+          const uid = user.uid;
+          await deleteData(uid);
+          await deleteUser(user);
+          window.location.reload()
+        } catch (error) {
+          console.error("Error deleting account:", error);
+        }
+      } else {
+        console.log("Account deletion cancelled.");
+      }
+    } else {
+      console.log("No user is currently signed in.");
+    }
+  });
 
 function submitKPIs(){
     if (userInputDc.value.length == 0 || userInputSb.value.length == 0 || userInputC.value.length == 0){
@@ -143,14 +175,16 @@ function submitKPIs(){
 function resetScores(){
     dcScore = 0
     sbScore = 0
-    cCurrent = 0
+    cCurrent = 0 //resets scores to 0
     render()
 }
+
+// ************** UI & Render ************** \\
 
 // updates the color based on our commision bands
 function getColorStyle(score, thresholds) {
     const style = {
-      color: "black",
+      color: "black", //set an inital style
     };
   
     for (const threshold of thresholds) { //iterated through the threshhold config, to set the inline style based on scores
@@ -159,7 +193,6 @@ function getColorStyle(score, thresholds) {
         break;
       }
     }
-  
     return style;
   }
 
@@ -169,7 +202,7 @@ function render(){
     const dcStyle = getColorStyle(dcScore, thresholdsConfig.dataCapture); //uses helper function to determine inline style
     const sbStyle = getColorStyle(sbScore, thresholdsConfig.salaryBoost);// this is based on threshhold config
     const ccStyle = getColorStyle(cCurrent, thresholdsConfig.callCurrent);
-    dataCapture.innerHTML = `<h1 style="color: ${dcStyle.color}">Data Captures: ${dcScore} / 60</h1>` 
+    dataCapture.innerHTML = `<h1 style="color: ${dcStyle.color}">Data Captures: ${dcScore} / 60</h1>`//set inline style 
     salaryBoost.innerHTML = `<h1 style="color: ${sbStyle.color}">Salary Boosts: ${sbScore} / 20</h1>`
     callCurrent.innerHTML = `<h1 style="color: ${ccStyle.color}">Calls Total: ${cCurrent} / 92</h1>`  
     enableDecrement() //has to take place in render so logic has updated score
@@ -198,6 +231,8 @@ function render(){
     })
 }
 
+// ************** Buttons and functionality ************** \\
+
 for (let i of listBtn){
     i.addEventListener('click', (e) =>{
         const itemRemove = e.target.getAttribute('data-remove')//finds DOM element based on attribute
@@ -205,8 +240,8 @@ for (let i of listBtn){
         const removeIndex = leadsArray.map(item => item.uuid).indexOf(itemId) //maps over array and then finds the current index
         if (removeIndex > -1){
             leadsArray.splice(removeIndex, 1) //removes selected index
-            const uid = auth.currentUser.uid
-            deleteLead(itemId, uid)
+            const uid = auth.currentUser.uid //find user
+            deleteLead(itemId, uid) //send info back to firebase
             render()
         }
         const itemEdit = e.target.getAttribute('data-edit')
@@ -223,14 +258,14 @@ for (let i of listBtn){
             telephone.value = `${leadsArray[editIndex].telephone}`,
             notes.value = `${leadsArray[editIndex].notes}`
             const uid = auth.currentUser.uid
-            deleteLead(editId, uid) //This is probably not the best solution, read more of the docs 
+            deleteLead(editId, uid) //Not a "true" edit function, slight ux issue, as cant cancel the edit 
             leadsArray.splice(editIndex, 1) // Removes item from array after edit
           }
 
     })
 }
-  
-// increment and decrementing scores
+
+// ************** increment and decrementing scores ************** \\
 
 for (let i of BtnSelector){ //iterating through button tags
     i.addEventListener('click', (e) => { //adding event listner to hold them all
@@ -280,5 +315,6 @@ function enableDecrement(){
     }
 }
 
-// getBackground() //limited to 50 calls per hour
+getBackground() //limited to 50 calls per hour
 retrieveLeads() //Load once as page is initially rendered
+setTimeout(userLogged, 2000) // Waits for the aync functions to return then checks auth status
