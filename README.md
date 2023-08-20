@@ -3,7 +3,7 @@ Application for tracking KPI's at my sales job
 
 <!-- Description -->
 
-An application i made in order to fix an issue myself and collegues were having at work. Our IT department has been unable to fix the callback system at work for over a month despite numerous tickets. As well as our KPI's not being readily available to us. I made this app in order to track my own leads and KPI's as well as my team in order to improve our performance and the ease of access to information.
+An application I made to fix an issue my colleagues and I were experiencing at work. Our IT department has been unable to resolve the callback system at work for over a month, despite numerous tickets. Additionally, our KPIs are not readily available to us. I developed this app to track my own leads and KPIs, as well as those of my team, in order to enhance our performance and improve access to information.
 
 Deployed via netlify:
 
@@ -17,11 +17,11 @@ Tech involved:
 
 - JavaScript
 
-- noSql database (Firebase)
+- noSQL database (Firebase)
 
-- GET reequests to a RESTful API
+- GET images from Unsplash RESTful API for backgrounds
 
-GET images from unsplash RESTful API for background
+Approach:
 
 Defining a single purpose of each global callback 
 
@@ -29,52 +29,49 @@ Creating and iterating over arrays created by user input
 
 Tracking and updating user information
 
-Manipulating CSS in JS
+Manipulating CSS in JavaScript
 
 Testing each function works independently before incorporating it as a callback
 
-Importing fonts from google and font awesome
+Importing fonts from Google and Font Awesome
 
-Bug testing and fixing
+Bug testing and finding resolutions
 
-Use of IDs and manipulating data based on user input
+Use of IDs to manipulate data based on user input
 
-Using a noSQL database to GET and POST data
+Employing a noSQL database to GET and POST data
 
-Writing scalabale code
+Writing scalabale code and reusable code
 
-Writing reusable functions and code
+Proper use of asynchronous JavaScript functions and try-catch blocks
 
-Proper use of asynchronous JavaScript functions and try, catch blocks
-
-Documenting the code and writing comments for ease of reading
+Documenting the code and adding comments for readability
 
 ------------------------------------------------------------------------------------------
 
 Future additions:
 
-- add a realtime database instead of local storage (based on approval from managment)  ✓
+- add a realtime database instead of local storage  ✓
 
-- add user authentification  ✓
+- Implement user authentication ✓
 
-- edit styling/accessibility based on user feedback  ✓
+- Adjust styling and improve accessibility based on user feedback   ✓
 
-- potentially add some additional functionality based on feedback  ✓
+- Potentially add extra functionality based on feedback  ✓
 
-- Allow the user to set the target (change styling to be based off %)
+- Allow users to set targets (adjust styling based on %)
 
-- Allow Background image to be changed/set by user
+- Enable users to change/set background images
 
 ------------------------------------------------------------------------------------------
 
 Conclusion:
 
-This is the first time I have created an app with user authentification, while it came with its difficulties this app
-is now scalable and has the potential to harbour hundreds of users.
+This marks my first experience creating an app with user authentication. Despite encountering challenges, the app is now scalable and has the potential to accommodate hundreds of users.
 
-It is able to read and write to Firebase based on the user ID which is created at user sign up via the user authentification console in firebase.
+It is capable of reading from and writing to Firebase based on the user ID, which is created during user sign-up through the Firebase authentication console.
 
-In the future I would like to try creating my own database and utilising another language such as c#.
+In the future, I aspire to create my own database and explore other languages such as C#.
 
 ![sign up](https://github.com/Eldrams/Track-my-data/assets/126687182/9387e58e-1a72-4ed9-ae2a-63213df2b533)
 
